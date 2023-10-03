@@ -62,9 +62,13 @@ while counter != 6:
 file_name = "D:\\OBD\\obd_data.xlsx"
 file_name_counter = 0
 
-while check_excel_file_exists(file_name):
-    file_name_counter += 1
-    file_name = f'D:\\OBD\\obd_data{file_name_counter}.xlsx'
+def change_file(file_name_counter):
+    while check_excel_file_exists(file_name):
+        file_name_counter += 1
+        file_name = f'D:\\OBD\\obd_data{file_name_counter}.xlsx'
+
+# change the writing file if it exists
+change_file(file_name_counter)
 
 while connection.is_connected():
     current_time = datetime.datetime.now()
@@ -150,6 +154,10 @@ while connection.is_connected():
 
     # Write the DataFrame to an Excel file
     data.to_excel(file_name, index=False)
+
+    # change the file when the data length gets to 400 rows
+    if len(data) == 400:
+        change_file(file_name_counter)
 
     time.sleep(1)  # Delay for 1 second before the next iteration
 
